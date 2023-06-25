@@ -114,6 +114,7 @@ class EvilCircle extends Shape {
 
   draw() {
     ctx.beginPath();
+    ctx.lineWidth = 3;
     ctx.strokeStyle = this.color;
     ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
     ctx.stroke();
@@ -121,19 +122,19 @@ class EvilCircle extends Shape {
 
   checkBounds() {
     if ((this.x + this.size) >= width) {
-      this.x -= size;
+      this.x -= this.size;
     }
   
     if ((this.x - this.size) <= 0) {
-      this.x += size;
+      this.x += this.size;
     }
   
     if ((this.y + this.size) >= height) {
-      this.y -= size;
+      this.y -= this.size;
     }
   
     if ((this.y - this.size) <= 0) {
-      this.y += size;
+      this.y += this.size;
     }
   }
 
@@ -145,14 +146,13 @@ class EvilCircle extends Shape {
         const distance = Math.sqrt(dx * dx + dy * dy);
   
         if (distance < this.size + ball.size) {
-          ball.color = this.color = randomRGB();
+          ball.exists=false;
           numberBalls-=1;
         }
       }
     }
   }
 }
-
 
 const balls = [];
 
@@ -173,6 +173,11 @@ while (balls.length < 25) {
   numberBalls+=1;
 }
 
+const evil = new EvilCircle(
+  random(10,width-10),
+  random(10,height-10)
+)
+
 function loop() {
   ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
   ctx.fillRect(0, 0, width, height);
@@ -192,10 +197,5 @@ function loop() {
   requestAnimationFrame(loop);
   count.textContent=`Ball count ${numberBalls}`;
 }
-
-const evil = new EvilCircle(
-  random(10,width-10),
-  random(10,height-10)
-)
 
 loop();
